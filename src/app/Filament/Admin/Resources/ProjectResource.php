@@ -59,9 +59,13 @@ class ProjectResource extends Resource
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image'),
                 Tables\Columns\TextColumn::make('demo_url')
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn ($state) => $state)
+                    ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('github_url')
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn ($state) => $state)
+                    ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('sort_order')
                     ->numeric()
                     ->sortable(),

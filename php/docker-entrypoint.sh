@@ -212,9 +212,14 @@ chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 echo "🗃️ Running migrations..."
 php artisan migrate --force
 
-# Step 8: Run custom project init command
-echo "🚀 Running project:init..."
-php artisan project:init || true
+# Step 8: Run custom project init command or migrate
+if [ ! -f /var/www/html/storage/project_initialized.lock ]; then
+  echo "🚀 Running project:init for the first time..."
+  php artisan project:init && touch /var/www/html/storage/project_initialized.lock || true
+else
+  echo "🗃️ Project already initialized. Running migrations only..."
+  php artisan migrate --force
+fi
 
 # Step 9: Create storage symbolic link
 echo "🔗 Creating storage link..."

@@ -17,7 +17,7 @@ class EducationResource extends Resource
 {
     protected static ?string $model = Education::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
 
     public static function form(Form $form): Form
     {
@@ -34,11 +34,18 @@ class EducationResource extends Resource
                     ->maxLength(255),
                 Forms\Components\DatePicker::make('start_date')
                     ->required(),
-                Forms\Components\DatePicker::make('end_date'),
+                Forms\Components\DatePicker::make('end_date')
+                    ->after('start_date')
+                    ->hidden(fn (Forms\Get $get): bool => $get('is_current'))
+                    ->required(fn (Forms\Get $get): bool => ! $get('is_current')),
                 Forms\Components\Toggle::make('is_current')
+                    ->live()
                     ->required(),
                 Forms\Components\TextInput::make('gpa')
                     ->numeric()
+                    ->minValue(0.00)
+                    ->maxValue(4.00)
+                    ->step(0.01)
                     ->default(null),
             ]);
     }

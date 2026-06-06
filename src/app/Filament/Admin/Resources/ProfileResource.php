@@ -29,8 +29,9 @@ class ProfileResource extends Resource
                 Forms\Components\TextInput::make('title')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('photo')
-                    ->maxLength(255)
+                Forms\Components\FileUpload::make('photo')
+                    ->image()
+                    ->directory('profiles')
                     ->default(null),
                 Forms\Components\TextInput::make('university')
                     ->maxLength(255)
@@ -66,8 +67,7 @@ class ProfileResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('title')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('photo')
-                    ->searchable(),
+                Tables\Columns\ImageColumn::make('photo'),
                 Tables\Columns\TextColumn::make('university')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('major')
@@ -76,9 +76,13 @@ class ProfileResource extends Resource
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('linkedin')
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn ($state) => $state)
+                    ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('github')
-                    ->searchable(),
+                    ->searchable()
+                    ->url(fn ($state) => $state)
+                    ->openUrlInNewTab(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
